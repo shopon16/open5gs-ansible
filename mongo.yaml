@@ -1,0 +1,62 @@
+---
+
+- name: VM test with outside network
+  hosts: all
+  gather_facts: true
+
+  tasks:
+  - name: Import the public key used by the package management system
+    become: yes
+    ansible.builtin.apt_key:
+#      id: 9FED2BCBDCD29CDF762678CBAED4B06F473041FA
+      url: https://pgp.mongodb.com/server-7.0.asc
+      keyring: /usr/share/keyrings/mongodb-server-7.0.gpg
+
+  - name: Create a list file for MongoDB
+    ansible.builtin.shell: echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+    register: displayfile
+  - debug:
+     msg: "{{ displayfile.stdout_lines }}"
+
+    - name: Update APT package cache
+      apt:
+        update_cache: yes
+
+    - name: Install MongoDB
+      apt:
+        name: mongodb-org
+        state: present
+
+    - name: Start MongoDB service
+      service:
+        name: mongod
+        state: started
+        enabled: yes
+    - name: disable update for MongoDB
+      shell: |
+          echo "mongodb-org hold" | sudo dpkg --set-selections
+          echo "mongodb-org-database hold" | sudo dpkg --set-selections
+          echo "mongodb-org-server hold" | sudo dpkg --set-selections
+          echo "mongodb-mongosh hold" | sudo dpkg --set-selections
+          echo "mongodb-org-mongos hold" | sudo dpkg --set-selections
+          echo "mongodb-org-tools hold" | sudo dpkg --set-selections
+          echo "disabled update for mongodb"
+      register: displayfile
+    - debug:
+       msg: "{{ displayfile.stdout_lines }}"
+
+
+    - name: Enabled and Start mongod with systemd
+      systemd:
+        name: mongod
+        state: started
+        enabled: true
+        masked: no
+
+    - name: Status of MongoDB
+      become: yes
+      shell: systemctl status mongod
+      register: displayfile
+    - debug:
+       msg: "{{ displayfile.stdout_lines }}"
+

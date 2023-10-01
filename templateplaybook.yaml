@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: yes
+  vars:
+  tasks:
+    - name: Apply Page Template
+      template:
+        src: mme.j2
+        dest: /home/vagrant/mme.yaml
+
