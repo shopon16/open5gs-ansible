@@ -16,7 +16,7 @@
   tasks:
     - name: Display IP Address
       debug:
-        var: ansible_all_ipv4_addresses
+        var: ansible_eth1.ipv4.address
 
 - name: Install MongoDB on Ubuntu
   hosts: all
@@ -110,3 +110,32 @@
        ip addr add 10.45.0.1/16 dev ogstun
        ip addr add 2001:db8:cafe::1/48 dev ogstun
        ip link set ogstun up
+
+- name: Open5gs installation
+  hosts: all
+  tasks:
+    - name: Add open5gs APT repository
+      become: yes
+      apt_repository:
+        repo: ppa:open5gs/latest
+    - name: Update APT package cache
+      become: yes
+      apt:
+        update_cache: yes
+    - name: Install Open5gs
+      become: yes
+      apt:
+        name: open5gs
+        state: present
+
+
+- name: Open5gs cofiguration changing
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: mme configuration changing
+      become: yes
+      template:
+        src: /home/omar/testinglab/mme.j2
+        dest: /etc/open5gs/mme.yaml
+

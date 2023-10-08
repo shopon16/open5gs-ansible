@@ -321,7 +321,7 @@ logger:
 mme:
     freeDiameter: /etc/freeDiameter/mme.conf
     s1ap:
-      - addr: {{ ansible_all_ipv4_addresses[1] }}
+      - addr: {{ mme_ip }}
     gtpc:
       - addr: 127.0.0.2
     metrics:
