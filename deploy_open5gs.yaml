@@ -16,7 +16,7 @@
   tasks:
     - name: Display IP Address
       debug:
-        var: ansible_eth1.ipv4.address
+        var: ansible_eth2.ipv4.address
 
 - name: Install MongoDB on Ubuntu
   hosts: all
@@ -26,26 +26,20 @@
       apt:
         name: curl
         state: present
-
     - name: Install gnupg
       apt:
         name: gnupg
         state: present
-
     - name: Import the public key used by the package management system
       become: yes
       ansible.builtin.apt_key:
-        url: https://pgp.mongodb.com/server-7.0.asc
-        keyring: /usr/share/keyrings/mongodb-server-7.0.gpg
-
-#    - name: Create a list file for MongoDB
-#      ansible.builtin.shell: echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+        url: https://pgp.mongodb.com/server-6.0.asc
+        keyring: /usr/share/keyrings/mongodb-server-6.0.gpg
     - name: Create a list file for MongoDB
       become: yes
       ansible.builtin.copy:
-       content: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse'
-       dest: /etc/apt/sources.list.d/mongodb-org-7.0.list
-
+       content: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse'
+       dest: /etc/apt/sources.list.d/mongodb-org-6.0.list
     - name: Update APT package cache
       apt:
         update_cache: yes
@@ -54,38 +48,31 @@
         name: mongodb-org
         force: true
         state: present
-
     - name: Start MongoDB service
       service:
         name: mongod
         state: started
         enabled: yes
-
     - name: Prevent mongodb-org from being upgraded
       ansible.builtin.dpkg_selections:
         name: mongodb-org
         selection: hold
-
     - name: Prevent mongodb-org-database from being upgraded
       ansible.builtin.dpkg_selections:
         name: mongodb-org-database
         selection: hold
-
     - name: Prevent mongodb-org-server from being upgraded
       ansible.builtin.dpkg_selections:
         name: mongodb-org-server
         selection: hold
-
     - name: Prevent mongodb-mongosh from being upgraded
       ansible.builtin.dpkg_selections:
         name: mongodb-mongosh
         selection: hold
-
     - name: Prevent mongodb-org-mongos from being upgraded
       ansible.builtin.dpkg_selections:
         name: mongodb-org-mongos
         selection: hold
-
     - name: Prevent mongodb-org-tools from being upgraded
       ansible.builtin.dpkg_selections:
         name: mongodb-org-tools
@@ -100,6 +87,8 @@
         state: started
         name: mongod
 
+
+
 - name: Create tunnel device
   hosts: all
   tasks:
@@ -110,6 +99,9 @@
        ip addr add 10.45.0.1/16 dev ogstun
        ip addr add 2001:db8:cafe::1/48 dev ogstun
        ip link set ogstun up
+
+
+
 
 - name: Open5gs installation
   hosts: all
@@ -129,13 +121,37 @@
         state: present
 
 
+
 - name: Open5gs cofiguration changing
   hosts: all
   gather_facts: true
+  vars:
+     mcc: "001"
+     mnc: "01"
   tasks:
     - name: mme configuration changing
       become: yes
       template:
-        src: /home/omar/testinglab/mme.j2
+        src: ./mme.j2
         dest: /etc/open5gs/mme.yaml
+      notify: "restart mme service"
+    - name: sgwu configuration changing
+      become: yes
+      template:
+        src: ./sgwu.j2
+        dest: /etc/open5gs/sgwu.yaml
+      notify: "restart sgwu service"
+  handlers:
+    - name: restart mme service
+      become: yes
+      service:
+        name: open5gs-mmed
+        state: restarted
+    - name: restart sgwu service
+      become: yes
+      service:
+        name: open5gs-sgwud
+        state: restarted
+
+
 

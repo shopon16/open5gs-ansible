@@ -1,0 +1,11 @@
+---
+- name: Get System IP Addresses
+  hosts: all
+  #connection: remote
+  tasks:
+    - name: IP for getting internet
+      debug:
+          msg: "{{ansible_eth1.ipv4.address}}"
+    - name: S1AP IP
+      debug:
+          msg: "{{ansible_eth2.ipv4.address}}"

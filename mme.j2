@@ -321,7 +321,7 @@ logger:
 mme:
     freeDiameter: /etc/freeDiameter/mme.conf
     s1ap:
-      - addr: {{ mme_ip }}
+      - addr: {{ ansible_eth2.ipv4.address }}
     gtpc:
       - addr: 127.0.0.2
     metrics:
@@ -329,14 +329,14 @@ mme:
         port: 9090
     gummei:
       plmn_id:
-        mcc: 999
-        mnc: 70
+        mcc: {{mcc}}
+        mnc: {{mnc}}
       mme_gid: 2
       mme_code: 1
     tai:
       plmn_id:
-        mcc: 999
-        mnc: 70
+        mcc: {{mcc}}
+        mnc: {{mnc}}
       tac: 1
     security:
         integrity_order : [ EIA2, EIA1, EIA0 ]

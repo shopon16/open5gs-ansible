@@ -116,7 +116,7 @@ sgwu:
     pfcp:
       - addr: 127.0.0.6
     gtpu:
-      - addr: 127.0.0.6
+      - addr: {{ ansible_eth2.ipv4.address }}
 
 #
 #  <PFCP Client>>
