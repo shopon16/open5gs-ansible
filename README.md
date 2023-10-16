@@ -14,7 +14,10 @@ vagrant up
 vagrant ssh-config
 ```
  Now update your hosts file (ansible_port and ansible_ssh_private_key_file) with the value you got from vagrant ssh-config command
-
+## check if you are getting ip from your interfaces
+```
+ansible-playbook debug.yaml -i hosts
+```
 ```console
 ansible all -m ping -i hosts
 ```
