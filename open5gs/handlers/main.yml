@@ -1,0 +1,11 @@
+---
+- name: restart mme service
+  become: yes
+  service:
+    name: open5gs-mmed
+    state: restarted
+- name: restart sgwu service
+  become: yes
+  service:
+    name: open5gs-sgwud
+    state: restarted

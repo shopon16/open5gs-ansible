@@ -1,0 +1,4 @@
+---
+# vars file for open5gs
+mcc: "001"
+mnc: "01"

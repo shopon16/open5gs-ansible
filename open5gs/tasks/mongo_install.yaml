@@ -1,0 +1,62 @@
+- name: Install curl
+  apt:
+    name: curl
+    state: present
+- name: Install gnupg
+  apt:
+    name: gnupg
+    state: present
+- name: Import the public key used by the package management system
+  become: yes
+  ansible.builtin.apt_key:
+    url: https://pgp.mongodb.com/server-6.0.asc
+    keyring: /usr/share/keyrings/mongodb-server-6.0.gpg
+- name: Create a list file for MongoDB
+  become: yes
+  ansible.builtin.copy:
+    content: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse'
+    dest: /etc/apt/sources.list.d/mongodb-org-6.0.list
+- name: Install MongoDB
+  apt:
+    name: mongodb-org
+    force: true
+    state: present
+- name: Start MongoDB service
+  service:
+    name: mongod
+    state: started
+    enabled: yes
+- name: Prevent mongodb-org from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: mongodb-org
+    selection: hold
+- name: Prevent mongodb-org-database from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: mongodb-org-database
+    selection: hold
+- name: Prevent mongodb-org-server from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: mongodb-org-server
+    selection: hold
+- name: Prevent mongodb-mongosh from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: mongodb-mongosh
+    selection: hold
+- name: Prevent mongodb-org-mongos from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: mongodb-org-mongos
+    selection: hold
+- name: Prevent mongodb-org-tools from being upgraded
+  ansible.builtin.dpkg_selections:
+    name: mongodb-org-tools
+    selection: hold
+- name: Enable service httpd and ensure it is not masked
+  systemd:
+    name: mongod
+    enabled: true
+    masked: no
+- name: Make sure a service unit is running
+  systemd:
+    state: started
+    name: mongod
+

@@ -1,0 +1,10 @@
+---
+# tasks file for open5gs
+- name: this task is for checking if machine can ping to google
+  ansible.builtin.import_tasks: check.yaml
+
+- name: this task is for installing mongodb
+  ansible.builtin.import_tasks: mongo_install.yaml
+
+- name: this task is for installing open5gsEPC
+  ansible.builtin.import_tasks: open5gsEPC_install.yaml

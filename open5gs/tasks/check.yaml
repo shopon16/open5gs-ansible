@@ -1,0 +1,12 @@
+---
+# tasks file for open5gs
+- name: Checking if machine can ping to google.com
+  ansible.builtin.shell: ping -c 1 google.com
+  register: displayfile
+- debug:
+    msg: "{{ displayfile.stdout_lines }}"
+
+- name: Display IP Address
+  debug:
+    var: ansible_eth2.ipv4.address
+

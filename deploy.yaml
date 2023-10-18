@@ -1,0 +1,5 @@
+- hosts: all
+  become: true
+  roles:
+    - open5gs
+  gather_facts: true
