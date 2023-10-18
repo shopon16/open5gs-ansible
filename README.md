@@ -1,11 +1,21 @@
-# System Information
-Ansible Version used 2.10.8
-Operating System: ubuntu 22
-Interface: two
-   one: for internet
-   other: S1AP
+Network Information
+===========
 
-## VM provisioning
+Interface Name  | Protocol
+-------------   | -------------
+eth1            | internet
+eth2            | S1AP
+
+Requirements
+-------------
+* Ubuntu 20.04
+* Ansible 2.10.8
+* Vagrant 2.2.19
+* MongoDB:		6.0.11
+* Mongosh:		2.0.2
+
+VM provisioning
+-------------
 create a vagrant machine with Vagrantfile which in root directory. this EPC core is deployed to ubuntu 20. please use ubuntu 20 otherwise you break some code.
 
 update ip address in Vagrantfile for internet and s1ap with your corresponding setup.
@@ -16,17 +26,15 @@ vagrant ssh-config
  Now update your hosts file (ansible_port and ansible_ssh_private_key_file) with the value you got from vagrant ssh-config command
 ## check if you are getting ip from your interfaces
 ```
-ansible-playbook debug.yaml -i hosts
+ansible-playbook ./open5gs/test/debug.yaml -i hosts
 ```
 ```console
 ansible all -m ping -i hosts
 ```
 if got success output it means your machine is reachable.
 you can also use debug.yaml file with your need.
- ## now deploy
- ```
- ansible-playbook deploy_open5gs.yaml -i hosts
- ```
+
+To deploy go to each role and follow instructions
 
 ## Acess your machine and investigate
 ```

@@ -13,7 +13,7 @@ Requirements
 
 Role Variables
 --------------
-First Header  | Second Header
+Parameter     | Value
 ------------- | -------------
 MCC           | 001
 MNC           | 01
