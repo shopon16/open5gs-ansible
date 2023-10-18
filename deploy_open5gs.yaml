@@ -89,6 +89,23 @@
 
 
 
+- name: Open5gs installation
+  hosts: all
+  tasks:
+    - name: Add open5gs APT repository
+      become: yes
+      apt_repository:
+        repo: ppa:open5gs/latest
+    - name: Update APT package cache
+      become: yes
+      apt:
+        update_cache: yes
+    - name: Install Open5gs
+      become: yes
+      apt:
+        name: open5gs
+        state: present
+
 - name: Create tunnel device
   hosts: all
   tasks:
@@ -109,23 +126,6 @@
        iptables -t nat -A POSTROUTING -s 10.45.0.0/16 ! -o ogstun -j MASQUERADE
        ip6tables -t nat -A POSTROUTING -s 2001:db8:cafe::/48 ! -o ogstun -j MASQUERADE
 
-
-- name: Open5gs installation
-  hosts: all
-  tasks:
-    - name: Add open5gs APT repository
-      become: yes
-      apt_repository:
-        repo: ppa:open5gs/latest
-    - name: Update APT package cache
-      become: yes
-      apt:
-        update_cache: yes
-    - name: Install Open5gs
-      become: yes
-      apt:
-        name: open5gs
-        state: present
 
 
 
