@@ -12,6 +12,11 @@
     name: open5gs
     state: present
 
+- name: Filter and return only selected facts
+  ansible.builtin.setup:
+    filter:
+      - 'ansible_ogstun.active'
+
 - name: creating tunnenl device
   become: yes
   ansible.builtin.shell: |

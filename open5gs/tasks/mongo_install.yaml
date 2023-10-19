@@ -16,6 +16,11 @@
   ansible.builtin.copy:
     content: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse'
     dest: /etc/apt/sources.list.d/mongodb-org-6.0.list
+
+- name: Update APT package cache
+  apt:
+    update_cache: yes
+
 - name: Install MongoDB
   apt:
     name: mongodb-org
