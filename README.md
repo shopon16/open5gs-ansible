@@ -35,7 +35,9 @@ if got success output it means your machine is reachable.
 you can also use debug.yaml file with your need.
 
 To deploy go to each role and follow instructions
-
+```
+ansible-playbook deploy.yaml -i hosts
+```
 ## Acess your machine and investigate
 ```
 vagrant ssh
