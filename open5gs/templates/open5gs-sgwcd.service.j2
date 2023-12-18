@@ -1,0 +1,16 @@
+[Unit]
+Description=Open5GS SGW-C Daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+Restart=always
+
+ExecStart={{exec_path}}/open5gs-sgwcd -c /etc/open5gs/sgwc.yaml
+RestartSec=2
+RestartPreventExitStatus=1
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

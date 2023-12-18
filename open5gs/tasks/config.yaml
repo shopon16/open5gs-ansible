@@ -1,0 +1,27 @@
+- name: mme configuration changing
+  become: yes
+  template:
+    src: ../templates/mme.j2
+    dest: /etc/open5gs/mme.yaml
+  notify: "restart mme service"
+
+- name: sgwu configuration changing
+  become: yes
+  template:
+    src: ../templates/sgwu.j2
+    dest: /etc/open5gs/sgwu.yaml
+  notify: "restart sgwu service"
+
+- name: hss configuration changing
+  become: yes
+  template:
+    src: ../templates/hss.j2
+    dest: /etc/open5gs/hss.yaml
+  notify: "restart hss service"
+
+- name: pcrf configuration changing
+  become: yes
+  template:
+    src: ../templates/pcrf.j2
+    dest: /etc/open5gs/pcrf.yaml
+  notify: "restart pcrf service"

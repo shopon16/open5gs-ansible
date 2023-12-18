@@ -1,5 +1,6 @@
 ---
 # tasks file for open5gs
+
 - name: this task is for checking if machine can ping to google
   ansible.builtin.import_tasks: check.yaml
 
@@ -8,3 +9,16 @@
 
 - name: this task is for installing open5gsEPC
   ansible.builtin.import_tasks: open5gsEPC_install.yaml
+
+- name: this task is for installing dependencies
+  ansible.builtin.import_tasks: buildtool.yaml
+
+- name: building and compiling open5gs
+  ansible.builtin.import_tasks: buildingCompilingCode.yaml
+
+- name: configuration start 
+  ansible.builtin.import_tasks: config.yaml
+- name: configuration start 
+  ansible.builtin.import_tasks: createService.yaml
+#- name: configuration start 
+#  ansible.builtin.import_tasks: test.yaml

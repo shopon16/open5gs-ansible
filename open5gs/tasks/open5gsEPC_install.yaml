@@ -1,21 +1,6 @@
-- name: Add open5gs APT repository
-  become: yes
-  apt_repository:
-    repo: ppa:open5gs/latest
-- name: Update APT package cache
-  become: yes
-  apt:
-    update_cache: yes
-- name: Install Open5gs
-  become: yes
-  apt:
-    name: open5gs
-    state: present
-
 - name: Filter and return only selected facts
   ansible.builtin.setup:
-    filter:
-      - 'ansible_ogstun.active'
+    gather_subset:
 
 - name: creating tunnenl device
   become: yes
@@ -24,27 +9,22 @@
       ip addr add 10.45.0.1/16 dev ogstun
       ip addr add 2001:db8:cafe::1/48 dev ogstun
       ip link set ogstun up
-  when: ansible_ogstun.active == false
+  when: ansible_ogstun is undefined
 
 - name: ip forwarding
   become: yes
-  ansible.builtin.shell: |
-      sysctl -w net.ipv4.ip_forward=1
-      sysctl -w net.ipv6.conf.all.forwarding=1
-      iptables -t nat -A POSTROUTING -s 10.45.0.0/16 ! -o ogstun -j MASQUERADE
-      ip6tables -t nat -A POSTROUTING -s 2001:db8:cafe::/48 ! -o ogstun -j MASQUERADE
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: true
+    state: present
+    reload: true
 
-
-
-- name: mme configuration changing
+- name: Block specific IP
   become: yes
-  template:
-    src: ../templates/mme.j2
-    dest: /etc/open5gs/mme.yaml
-  notify: "restart mme service"
-- name: sgwu configuration changing
-  become: yes
-  template:
-    src: ../templates/sgwu.j2
-    dest: /etc/open5gs/sgwu.yaml
-  notify: "restart sgwu service"
+  ansible.builtin.iptables:
+    chain: POSTROUTING
+    jump: MASQUERADE
+    out_interface: "! ogstun"
+    table: nat
+    source: 10.45.0.0/16

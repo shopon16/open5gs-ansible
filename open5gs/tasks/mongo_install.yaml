@@ -1,8 +1,10 @@
 - name: Install curl
+  become: yes
   apt:
     name: curl
     state: present
 - name: Install gnupg
+  become: yes
   apt:
     name: gnupg
     state: present
@@ -14,53 +16,64 @@
 - name: Create a list file for MongoDB
   become: yes
   ansible.builtin.copy:
-    content: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse'
+    content: 'deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-6.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse'
     dest: /etc/apt/sources.list.d/mongodb-org-6.0.list
 
 - name: Update APT package cache
+  become: yes
   apt:
     update_cache: yes
 
 - name: Install MongoDB
+  become: yes
   apt:
     name: mongodb-org
     force: true
     state: present
 - name: Start MongoDB service
+  become: yes
   service:
     name: mongod
     state: started
     enabled: yes
 - name: Prevent mongodb-org from being upgraded
+  become: yes
   ansible.builtin.dpkg_selections:
     name: mongodb-org
     selection: hold
 - name: Prevent mongodb-org-database from being upgraded
+  become: yes
   ansible.builtin.dpkg_selections:
     name: mongodb-org-database
     selection: hold
 - name: Prevent mongodb-org-server from being upgraded
+  become: yes
   ansible.builtin.dpkg_selections:
     name: mongodb-org-server
     selection: hold
 - name: Prevent mongodb-mongosh from being upgraded
+  become: yes
   ansible.builtin.dpkg_selections:
     name: mongodb-mongosh
     selection: hold
 - name: Prevent mongodb-org-mongos from being upgraded
+  become: yes
   ansible.builtin.dpkg_selections:
     name: mongodb-org-mongos
     selection: hold
 - name: Prevent mongodb-org-tools from being upgraded
+  become: yes
   ansible.builtin.dpkg_selections:
     name: mongodb-org-tools
     selection: hold
 - name: Enable service httpd and ensure it is not masked
+  become: yes
   systemd:
     name: mongod
     enabled: true
     masked: no
 - name: Make sure a service unit is running
+  become: yes
   systemd:
     state: started
     name: mongod

@@ -9,3 +9,73 @@
   service:
     name: open5gs-sgwud
     state: restarted
+- name: restart hss service
+  become: yes
+  service:
+    name: open5gs-hssd
+    state: restarted
+
+- name: restart pcrf service
+  become: yes
+  service:
+    name: open5gs-pcrfd
+    state: restarted
+
+- name: mme_handler
+  become: yes
+  ansible.builtin.shell: |
+    systemctl daemon-reload 
+    systemctl enable open5gs-mmed
+    sudo systemctl restart open5gs-mmed
+    exit 0
+
+
+- name: sgwu_handler
+  become: yes
+  ansible.builtin.shell: |
+    systemctl daemon-reload 
+    systemctl enable open5gs-sgwud
+    sudo systemctl restart open5gs-sgwud
+    exit 0
+
+- name: hss_handler
+  become: yes
+  ansible.builtin.shell: |
+    systemctl daemon-reload 
+    systemctl enable open5gs-hssd
+    sudo systemctl restart open5gs-hssd
+    exit 0
+
+- name: pcrf_handler
+  become: yes
+  ansible.builtin.shell: |
+    systemctl daemon-reload 
+    systemctl enable open5gs-pcrfd
+    sudo systemctl restart open5gs-pcrfd
+    exit 0
+
+- name: smf_handler
+  become: yes
+  ansible.builtin.shell: |
+    systemctl daemon-reload 
+    systemctl enable open5gs-smfd
+    sudo systemctl restart open5gs-smfd
+    exit 0
+
+
+- name: sgwc_handler
+  become: yes
+  ansible.builtin.shell: |
+    systemctl daemon-reload 
+    systemctl enable open5gs-sgwcd
+    sudo systemctl restart open5gs-sgwcd
+    exit 0
+
+- name: upf_handler
+  become: yes
+  ansible.builtin.shell: |
+    systemctl daemon-reload 
+    systemctl enable open5gs-upfd
+    sudo systemctl restart open5gs-upfd
+    exit 0
+    

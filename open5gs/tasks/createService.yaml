@@ -1,0 +1,117 @@
+- name: Creating mme Services
+  become: yes
+  ansible.builtin.stat:
+    path: /etc/systemd/system/open5gs-mmed.service
+  register: mme
+
+- name: mme configuration changing
+  become: yes
+  template:
+    src: ../templates/open5gs-mmed.service.j2
+    dest: /etc/systemd/system/open5gs-mmed.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "mme_handler"
+  when: mme.stat.exists == false
+
+
+- name: Creating sgwu Services
+  become: yes
+  ansible.builtin.stat:
+    path: /etc/systemd/system/open5gs-sgwud.service
+  register: sgwu
+
+
+- name: Copy file with owner and permissions
+  become: yes
+  template:
+    src: ../templates/open5gs-sgwud.service.j2
+    dest: /etc/systemd/system/open5gs-sgwud.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "sgwu_handler"
+  when: sgwu.stat.exists == false
+
+
+- name: Creating hss Services
+  become: yes
+  ansible.builtin.stat:
+    path: /etc/systemd/system/open5gs-hssd.service
+  register: hss
+- name: Copy file with owner and permissions
+  become: yes
+  template:
+    src: ../templates/open5gs-hssd.service.j2
+    dest: /etc/systemd/system/open5gs-hssd.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "hss_handler"
+  when: hss.stat.exists == false
+
+- name: Creating pcrf Services
+  become: yes
+  ansible.builtin.stat:
+    path: /etc/systemd/system/open5gs-pcrfd.service
+  register: pcrf
+- name: Copy file with owner and permissions
+  become: yes
+  template:
+    src: ../templates/open5gs-pcrfd.service.j2
+    dest: /etc/systemd/system/open5gs-pcrfd.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "pcrf_handler"
+  when: pcrf.stat.exists == false
+
+- name: Creating smf Services
+  become: yes
+  ansible.builtin.stat:
+    path: /etc/systemd/system/open5gs-smfd.service
+  register: smf
+- name: Copy file with owner and permissions
+  become: yes
+  template:
+    src: ../templates/open5gs-smfd.service.j2
+    dest: /etc/systemd/system/open5gs-smfd.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "smf_handler"
+  when: smf.stat.exists == false
+
+- name: Creating sgwc Services
+  become: yes
+  ansible.builtin.stat:
+    path: /etc/systemd/system/open5gs-sgwcd.service
+  register: sgwc
+- name: Copy file with owner and permissions
+  become: yes
+  template:
+    src: ../templates/open5gs-sgwcd.service.j2
+    dest: /etc/systemd/system/open5gs-sgwcd.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "sgwc_handler"
+  when: sgwc.stat.exists == false
+
+- name: Creating upf Services
+  become: yes
+  ansible.builtin.stat:
+    path: /etc/systemd/system/open5gs-upfd.service
+  register: upf
+- name: Copy file with owner and permissions
+  become: yes
+  template:
+    src: ../templates/open5gs-upfd.service.j2
+    dest: /etc/systemd/system/open5gs-upfd.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: "upf_handler"
+  when: upf.stat.exists == false
+

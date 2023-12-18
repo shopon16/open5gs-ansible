@@ -1,0 +1,15 @@
+[Unit]
+Description=Open5GS SGW-U Daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+Restart=always
+ExecStart={{exec_path}}/open5gs-sgwud -c /etc/open5gs/sgwu.yaml
+RestartSec=2
+RestartPreventExitStatus=1
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,15 @@
+[Unit]
+Description=Open5GS SMF Daemon
+After=network-online.target
+
+[Service]
+Type=simple
+
+Restart=always
+ExecStart={{exec_path}}/bin/open5gs-smfd -c /etc/open5gs/smf.yaml
+RestartSec=2
+RestartPreventExitStatus=1
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
