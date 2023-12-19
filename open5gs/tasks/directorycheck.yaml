@@ -1,9 +1,9 @@
 - name: Get stats of the FS object
   ansible.builtin.stat:
-    path: /home/vagrant/open5gs/build/
+    path: {{source_dir}}/open5gs/build/
   register: p
 - name: Building open5gs from Source Code
-  ansible.builtin.shell: cd /home/vagrant/open5gs && meson build --prefix=/home/vagrant/open5gs/install && ninja -C build && cd build && ninja install
+  ansible.builtin.shell: cd {{source_dir}}/open5gs && meson build --prefix={{source_dir}}/open5gs/install && ninja -C build && cd build && ninja install
   register: ass
   when: p.stat.isdir is defined == false
 - debug:
@@ -11,7 +11,7 @@
 
 
 - name: Re-Compiling open5gs
-  ansible.builtin.shell: cd /home/vagrant/open5gs && ninja -C build && cd build && ninja install
+  ansible.builtin.shell: cd {{source_dir}}/open5gs && ninja -C build && cd build && ninja install
   register: ass
   when: p.stat.isdir is defined == true
 - debug:

@@ -1,7 +1,7 @@
 - name: Example clone of a single branch
   git:
     repo: https://github.com/shopon16/open5gs.git
-    dest: /home/vagrant/open5gs
+    dest: "{{source_dir}}/open5gs"
     clone: yes
     update: yes
   register: mygit
@@ -12,11 +12,11 @@
 - name: Get stats of the FS object
   become: yes
   ansible.builtin.stat:
-    path: /home/vagrant/open5gs/build/
+    path: "{{source_dir}}/open5gs/build/"
   register: p
 - name: Building open5gs from Source Code
   become: yes
-  ansible.builtin.shell: cd /home/vagrant/open5gs && meson build --bindir {{exec_path}} --prefix=/ && ninja -C build && cd build && ninja install
+  ansible.builtin.shell: cd {{source_dir}}/open5gs && meson build --bindir {{exec_path}} --prefix=/ && ninja -C build && cd build && ninja install
   register: ass
   when: p.stat.isdir is defined == false
 - debug:
@@ -24,7 +24,7 @@
 
 - name: Re-Compiling open5gs
   become: yes
-  ansible.builtin.shell: cd /home/vagrant/open5gs && ninja -C build && cd build && ninja install
+  ansible.builtin.shell: cd {{source_dir}}/open5gs && ninja -C build && cd build && ninja install
   register: ass
   when: mygit.before != mygit.after
 - debug:

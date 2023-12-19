@@ -1,8 +1,8 @@
 ---
 # tasks file for open5gs
 
-- name: this task is for checking if machine can ping to google
-  ansible.builtin.import_tasks: check.yaml
+#- name: this task is for checking if machine can ping to google
+#  ansible.builtin.import_tasks: check.yaml
 
 - name: this task is for installing mongodb
   ansible.builtin.import_tasks: mongo_install.yaml
