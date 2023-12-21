@@ -1,1 +1,1 @@
-host1 ansible_host=34.126.174.201 ansible_user=omar ansible_port=22 ansible_ssh_private_key_file=/home/omar/.ssh/id_rsa
+host1 ansible_host=34.121.134.241 ansible_user=omar ansible_port=22 ansible_ssh_private_key_file=/home/omar/.ssh/id_rsa

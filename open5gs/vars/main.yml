@@ -1,9 +1,9 @@
 ---
 # vars file for open5gs
-mcc: "001"
+mcc: "315"
 mnc: "01"
-s1ap_ip: "10.148.0.28"
-sgwu_ip: "10.148.0.28"
+s1ap_ip: "10.128.0.49"
+sgwu_ip: "10.128.0.49"
 centraldb_ip: "10.128.0.74"
 exec_path: "/usr/local/bin"
 source_dir: "/home/omar"
