@@ -1,0 +1,24 @@
+dev:
+  hosts:
+    splittedHelper1: 
+      ansible_host: 192.168.200.99 
+      ansible_user: vagrant 
+      ansible_port: 22 
+      ansible_ssh_private_key_file: /home/omar/splittedHelper
+    mme: 
+      ansible_host: 192.168.200.91 
+      ansible_user: vagrant 
+      ansible_port: 22 
+      ansible_ssh_private_key_file: /home/omar/mme
+    sgwc: 
+      ansible_host: 192.168.200.92 
+      ansible_user: vagrant 
+      ansible_port: 22 
+      ansible_ssh_private_key_file: /home/omar/sgwc
+pro:
+  hosts:
+    all-in-one-core-usa: 
+      ansible_host: 35.202.18.201 
+      ansible_user: faisal_nybsys_com 
+      ansible_port: 22 
+      ansible_ssh_private_key_file: /home/omar/.ssh/gcp

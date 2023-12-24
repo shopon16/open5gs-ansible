@@ -78,4 +78,10 @@
     systemctl enable open5gs-upfd
     sudo systemctl restart open5gs-upfd
     exit 0
+
+- name: shortcut_handler
+  become: yes
+  ansible.builtin.shell: |
+    systemctl /shortcut.sh restart
+    exit 0
     

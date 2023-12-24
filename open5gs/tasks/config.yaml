@@ -5,6 +5,13 @@
     dest: /etc/open5gs/mme.yaml
   notify: "restart mme service"
 
+- name: mme configuration changing 2
+  become: yes
+  template:
+    src: ../templates/mme.conf.j2
+    dest: /etc/freeDiameter/mme.conf
+  notify: "restart mme service"
+
 - name: sgwu configuration changing
   become: yes
   template:

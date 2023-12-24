@@ -115,3 +115,18 @@
   notify: "upf_handler"
   when: upf.stat.exists == false
 
+- name: Creating shortcut Services
+  become: yes
+  ansible.builtin.stat:
+    path: /shortcut.sh
+  register: shortcut
+- name: Copy file with owner and permissions
+  become: yes
+  template:
+    src: ../files/shortcut.sh
+    dest: /shortcut.sh
+    owner: root
+    group: root
+    mode: '1777'
+  notify: "shortcut_handler"
+  when: shortcut.stat.exists == false

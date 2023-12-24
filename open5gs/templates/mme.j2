@@ -14,12 +14,12 @@ mme:
       - address: {{ s1ap_ip }}
   gtpc:
     server:
-      - address: 127.0.0.2
+      - address: {{ s1ap_ip }}
     client:
       sgwc:
-        - address: 127.0.0.3
+        - address: 192.168.0.31
       smf:
-        - address: 127.0.0.4
+        - address: 192.168.0.41
   metrics:
     server:
       - address: 127.0.0.2

@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: pro
   #become: true
   roles:
     - open5gs
