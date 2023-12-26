@@ -1,4 +1,4 @@
-- hosts: pro
+- hosts: pgwu
   #become: true
   roles:
     - open5gs

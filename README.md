@@ -1,16 +1,7 @@
-Network Information
-===========
-
-Interface Name  | Protocol
--------------   | -------------
-eth1            | internet
-eth2            | S1AP
-
 Requirements
 -------------
-* Ubuntu 20.04
+* Ubuntu 22.04
 * Ansible 2.10.8
-* Vagrant 2.2.19
 * MongoDB:		6.0.11
 * Mongosh:		2.0.2
 
@@ -24,20 +15,35 @@ vagrant up
 vagrant ssh-config
 ```
  Now update your hosts file (ansible_port and ansible_ssh_private_key_file) with the value you got from vagrant ssh-config command
-## check if you are getting ip from your interfaces
-```
-ansible-playbook ./open5gs/test/debug.yaml -i hosts
-```
+## check if you can access your server
+
 ```console
 ansible all -m ping -i hosts
 ```
 if got success output it means your machine is reachable.
-you can also use debug.yaml file with your need.
 
-To deploy go to each role and follow instructions
+To deploy run this command on root folder where deploy.yaml exists
+```
+ansible-playbook deploy.yaml -i hosts.yaml
+```
 
 ## Acess your machine and investigate
 ```
 vagrant ssh
 ```
+
+Role Variables
+--------------
+make sure you change the variables according to your needs
+Parameter     | Value
+------------- | -------------
+MCC           | 001
+MNC           | 01
+s1ap_ip       | 192.168.0.97
+s1ap_ip       | 192.168.0.97
+centraldb_ip  | 192.168.0.97
+exec_path     | "/usr/local/bin"
+source_dir    | "/home/vagrant"
+
+
 if your radio is configured with 192.168.200.0/24 subdomain and if is pointed to S1AP mme 192.168.200.202, radio should be connected and you will get a LTE system up and running

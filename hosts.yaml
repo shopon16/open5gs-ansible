@@ -15,6 +15,16 @@ dev:
       ansible_user: vagrant 
       ansible_port: 22 
       ansible_ssh_private_key_file: /home/omar/sgwc
+    pcrf: 
+      ansible_host: 192.168.200.98 
+      ansible_user: vagrant 
+      ansible_port: 22 
+      ansible_ssh_private_key_file: /home/omar/pcrf
+    pgwu: 
+      ansible_host: 192.168.200.97 
+      ansible_user: vagrant 
+      ansible_port: 22 
+      ansible_ssh_private_key_file: /home/omar/pgwu
 pro:
   hosts:
     all-in-one-core-usa: 
